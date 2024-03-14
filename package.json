@@ -1,0 +1,38 @@
+{
+  "name": "homeboard",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+		"lint:fix": "npm run lint -- --fix",
+    "preview": "vite preview",
+    "prepare": "husky",
+		"prettier:fix": "prettier --write"
+  },
+  "dependencies": {
+    "@linaria/core": "^6.1.0",
+    "@linaria/react": "^6.1.0",
+    "@wyw-in-js/vite": "^0.5.0",
+    "home-assistant-js-websocket": "^9.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.64",
+    "@types/react-dom": "^18.2.21",
+    "@typescript-eslint/eslint-plugin": "^7.1.1",
+    "@typescript-eslint/parser": "^7.1.1",
+    "@vitejs/plugin-react": "^4.2.1",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "prettier": "^3.2.5",
+    "typescript": "^5.2.2",
+    "vite": "^5.1.6"
+  }
+}
