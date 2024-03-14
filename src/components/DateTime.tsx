@@ -1,12 +1,22 @@
 import { styled } from "@linaria/react";
 import { renderDate, renderTime } from "../lib/dateTime.ts";
 import { CenterCard } from "./Card.tsx";
+import { useEffect, useState } from "react";
 
 export default function DateTime() {
+	const [time, setTime] = useState(new Date());
+	useEffect(() => {
+		const interval = setInterval(() => {
+			setTime(new Date());
+		}, 5000);
+		return () => {
+			clearInterval(interval);
+		};
+	}, []);
 	return (
 		<CenterCard>
-			<StyledTime>{renderTime()}</StyledTime>
-			<StyledDate>{renderDate()}</StyledDate>
+			<StyledTime>{renderTime(time).replace(/\s/, "")}</StyledTime>
+			<StyledDate>{renderDate(time)}</StyledDate>
 		</CenterCard>
 	);
 }

@@ -1,3 +1,22 @@
+:root {
+	--font-mono: "Space Mono", monospace;
+	--font-sans: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+	font-family: var(--font-mono);
+
+	--bar-height: 1.5rem;
+	--spinner-width: 8px;
+	--spinner-color: #535bf2;
+}
+@media (prefers-color-scheme: light) {
+	:root {
+		--color-border: #111;
+	}
+}
 @media (prefers-color-scheme: dark) {
-	--color-border: #eee;
+	:root {
+		--color-border: #eee;
+		--bar-background: #111;
+		--indicator-dot: #fff;
+		--indicator-dot-shadow: #bbb;
+	}
 }

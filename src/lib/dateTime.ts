@@ -1,15 +1,27 @@
 const LOCALE = "en-AU";
-export function renderTime() {
+export function renderTime(date: Date = new Date()) {
 	return Intl.DateTimeFormat(LOCALE, {
 		hour: "2-digit",
 		minute: "2-digit",
-	}).format();
+		hour12: true,
+	})
+		.format(date)
+		.replace(/[ap]m/, "");
 }
-export function renderDate() {
+export function renderDate(date: Date = new Date()) {
 	return Intl.DateTimeFormat(LOCALE, {
-		year: "numeric",
 		month: "long",
 		day: "numeric",
 		weekday: "short",
-	}).format();
+	}).format(date);
+}
+
+export function renderWeekday(date: Date = new Date()) {
+	return Intl.DateTimeFormat(LOCALE, {
+		weekday: "short",
+	}).format(date);
+}
+
+export function startOfDay(date: Date = new Date()) {
+	return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 }
