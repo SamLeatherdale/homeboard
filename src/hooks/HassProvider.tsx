@@ -44,9 +44,9 @@ export default function HassProvider({ children }: PropsWithChildren) {
 	const value = useMemo(
 		() => entityState,
 		[
-			entityState?.climate.last_changed,
-			entityState?.sun.last_changed,
-			entityState?.weather.last_changed,
+			entityState?.climate.last_updated,
+			entityState?.sun.last_updated,
+			entityState?.weather.last_updated,
 		],
 	);
 
