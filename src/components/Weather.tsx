@@ -28,18 +28,18 @@ export default function Weather() {
 	return (
 		<Card>
 			<CurrentWeather>
-				<Icon src={getWeatherIcon(weather.state, sun)} alt={weather.state} />
+				<WeatherIcon image={getWeatherIcon(weather.state, sun)} />
 				<WeatherStack>
-					<Emoji>🏠</Emoji>
 					<Temp>
 						{indoorTemp}
 						{tempUnit}
 					</Temp>
-					<Emoji>🏞️</Emoji>
+					<Emoji>🏠</Emoji>
 					<Temp>
 						{outdoorTemp}
 						{tempUnit}
 					</Temp>
+					<Emoji>🏞️</Emoji>
 				</WeatherStack>
 			</CurrentWeather>
 			<Forecast>
@@ -59,21 +59,28 @@ export default function Weather() {
 }
 
 const CurrentWeather = styled.div`
-	display: flex;
+	display: grid;
+	grid-template-columns: auto 1fr;
 `;
-const Icon = styled.img`
-	width: 30vh;
-	height: 30vh;
+const WeatherIcon = styled.div<{ image: string }>`
+	width: 40vh;
+	height: 40vh;
+	background-image: ${(props) => `url("${props.image}")`};
+	background-size: 125%;
+	background-position: center;
 `;
 
 const WeatherStack = styled.div`
-	font-size: 10vh;
+	font-size: 12vh;
 	display: grid;
-	grid-template-columns: 30vh 1fr;
+	grid-template-columns: 1fr auto;
+	column-gap: 4vh;
 	flex-direction: column;
-	justify-content: center;
+	align-items: center;
 `;
-const Emoji = styled.span``;
+const Emoji = styled.span`
+	font-size: 8vh;
+`;
 const Temp = styled.span`
 	display: inline-block;
 	min-width: 20vh;
