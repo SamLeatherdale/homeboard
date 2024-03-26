@@ -10,6 +10,6 @@ export default function IFrame() {
 }
 const StyledIFrame = styled.iframe`
 	width: 100%;
-	height: 52vh;
+	height: 70vh;
 	border: none;
 `;
