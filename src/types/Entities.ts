@@ -12,6 +12,18 @@ export type ClimateEntity = GenericHassEntity<{
 	/** Target temperature */
 	temperature: number;
 }>;
+export type SunEntity = GenericHassEntity<{
+	azimuth: number;
+	elevation: number;
+	rising: boolean;
+	next_dawn: string;
+	next_dusk: string;
+	next_midnight: string;
+	next_noon: string;
+	next_rising: string;
+	next_setting: string;
+	state: "above_horizon" | "below_horizon";
+}>;
 export type WeatherForecast = {
 	datetime: string;
 	condition: string;
