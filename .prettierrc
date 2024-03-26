@@ -2,5 +2,10 @@
   "useTabs": true,
   "tabWidth": 2,
 	"printWidth": 80,
-	"endOfLine": "crlf"
+	"endOfLine": "crlf",
+	"plugins": [
+		"@trivago/prettier-plugin-sort-imports"
+	],
+	"importOrder": ["<THIRD_PARTY_MODULES>", "^[./]"],
+	"importOrderSortSpecifiers": true
 }

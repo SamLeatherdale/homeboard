@@ -1,10 +1,10 @@
+import { styled } from "@linaria/react";
+import { ScreenBurnLine } from "react-screen-burn";
 import "./App.css";
 import DateTime from "./components/DateTime.tsx";
-import { styled } from "@linaria/react";
-import HassProvider from "./hooks/HassProvider.tsx";
+import IFrame from "./components/IFrame.tsx";
 import Weather from "./components/Weather.tsx";
-import Timetable from "./components/Timetable.tsx";
-import { ScreenBurnLine } from "react-screen-burn";
+import HassProvider from "./hooks/HassProvider.tsx";
 
 function App() {
 	const MINUTE_MS = 60 * 1000;
@@ -20,7 +20,7 @@ function App() {
 			<MainRow>
 				<Weather />
 				<DateTime />
-				<Timetable />
+				<IFrame />
 			</MainRow>
 		</HassProvider>
 	);
