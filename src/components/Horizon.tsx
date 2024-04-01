@@ -46,8 +46,8 @@ export default function Horizon() {
 			moon: false,
 			fields: {
 				// Header labels
-				sunrise: true,
-				sunset: true,
+				sunrise: false,
+				sunset: false,
 				// Footer labels
 				dawn: false,
 				noon: false,
