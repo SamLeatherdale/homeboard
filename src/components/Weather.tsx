@@ -1,13 +1,13 @@
-import { useHass } from "../hooks/HassProvider.tsx";
-import { getWeatherIcon } from "../lib/weatherIcons.ts";
-import { Spinner } from "./Spinner.tsx";
 import { styled } from "@linaria/react";
-import { Card } from "./Card.tsx";
-import { WeeklyForecast } from "./forecast/WeatherForecast.tsx";
+import { useHass } from "../hooks/HassProvider.tsx";
 import { startOfDay } from "../lib/dateTime.ts";
+import { getWeatherIcon } from "../lib/weatherIcons.ts";
+import { Card } from "./Card.tsx";
+import { Spinner } from "./Spinner.tsx";
+import { WeeklyForecast } from "./forecast/WeatherForecast.tsx";
 
 export default function Weather() {
-	const entities = useHass();
+	const { entities } = useHass();
 
 	if (!entities) {
 		return <Spinner />;
