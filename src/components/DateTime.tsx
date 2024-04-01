@@ -1,7 +1,8 @@
 import { styled } from "@linaria/react";
+import { useEffect, useState } from "react";
 import { renderDate, renderTime } from "../lib/dateTime.ts";
 import { CenterCard } from "./Card.tsx";
-import { useEffect, useState } from "react";
+import Horizon from "./Horizon.tsx";
 
 export default function DateTime() {
 	const [time, setTime] = useState(new Date());
@@ -17,12 +18,14 @@ export default function DateTime() {
 		<CenterCard>
 			<StyledTime>{renderTime(time).replace(/\s/, "")}</StyledTime>
 			<StyledDate>{renderDate(time)}</StyledDate>
+			<Horizon />
 		</CenterCard>
 	);
 }
 const StyledTime = styled.time`
 	display: block;
 	font-size: 25vh;
+	line-height: 1.2;
 `;
 const StyledDate = styled.time`
 	display: block;

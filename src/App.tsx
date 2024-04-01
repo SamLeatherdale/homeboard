@@ -2,7 +2,7 @@ import { styled } from "@linaria/react";
 import { ScreenBurnLine } from "react-screen-burn";
 import "./App.css";
 import DateTime from "./components/DateTime.tsx";
-import IFrame from "./components/IFrame.tsx";
+import Timetable from "./components/Timetable.tsx";
 import Weather from "./components/Weather.tsx";
 import HassProvider from "./hooks/HassProvider.tsx";
 
@@ -20,7 +20,7 @@ function App() {
 			<MainRow>
 				<Weather />
 				<DateTime />
-				<IFrame />
+				<Timetable />
 			</MainRow>
 		</HassProvider>
 	);

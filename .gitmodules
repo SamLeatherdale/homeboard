@@ -1,0 +1,3 @@
+[submodule "lovelace-horizon-card"]
+	path = lovelace-horizon-card
+	url = https://github.com/SamLeatherdale/lovelace-horizon-card
