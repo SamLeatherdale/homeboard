@@ -1,12 +1,13 @@
 const LOCALE = "en-AU";
 export function renderTime(date: Date = new Date()) {
+	return renderTimeWithSuffix(date).replace(/[ap]m/, "");
+}
+export function renderTimeWithSuffix(date: Date = new Date()) {
 	return Intl.DateTimeFormat(LOCALE, {
 		hour: "2-digit",
 		minute: "2-digit",
 		hour12: true,
-	})
-		.format(date)
-		.replace(/[ap]m/, "");
+	}).format(date);
 }
 export function renderDate(date: Date = new Date()) {
 	return Intl.DateTimeFormat(LOCALE, {

@@ -8,15 +8,61 @@ import {
 import * as React from "react";
 import { useEffect, useRef } from "react";
 import { HorizonCard } from "../../lovelace-horizon-card/src/components/horizonCard";
-import { useConfig } from "../hooks/HassProvider.tsx";
+import { useConfig, useSunEntity } from "../hooks/HassProvider.tsx";
+import { renderTimeWithSuffix } from "../lib/dateTime.ts";
+import { SunAttributes } from "../types/Entities.ts";
 import { Spinner } from "./Spinner.tsx";
+
+export default function Horizon() {
+	const sun = useSunEntity();
+	const attributes = sun.attributes as SunAttributes;
+	const labels = {
+		next_dusk: "Dusk",
+		next_dawn: "Dawn",
+		next_rising: "Sunrise",
+		next_setting: "Sunset",
+	} satisfies Partial<Record<keyof SunAttributes, string>>;
+
+	const [{ key, time }] = Object.entries(attributes)
+		.filter((entry): entry is [keyof typeof labels, string] => {
+			const [key, value] = entry;
+			return key in labels && typeof value === "string";
+		})
+		.map(([key, value]) => ({
+			key,
+			time: new Date(value),
+		}))
+		.filter(({ time }) => time > new Date())
+		.sort((a, b) => a.time.getTime() - b.time.getTime());
+
+	return (
+		<Wrapper>
+			<HorizonGraph />
+			<NextSolarEvent>
+				{labels[key]}: {renderTimeWithSuffix(time)}
+			</NextSolarEvent>
+		</Wrapper>
+	);
+}
+
+const Wrapper = styled.div`
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+`;
+const NextSolarEvent = styled.time`
+	position: relative;
+	top: -5vh;
+	font-size: 10vh;
+	text-align: right;
+`;
 
 const HorizonWrapper = createComponent({
 	react: React,
 	tagName: "horizon-card",
 	elementClass: HorizonCard,
 });
-export default function Horizon() {
+function HorizonGraph() {
 	const config = useConfig();
 
 	const ref = useRef<HorizonCard | null>(null);
@@ -60,13 +106,5 @@ export default function Horizon() {
 		return <Spinner />;
 	}
 
-	return (
-		<Wrapper>
-			<HorizonWrapper ref={ref} />
-		</Wrapper>
-	);
+	return <HorizonWrapper ref={ref} />;
 }
-
-const Wrapper = styled.div`
-	width: 100%;
-`;
