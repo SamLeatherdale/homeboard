@@ -5,7 +5,7 @@ async function runner() {
 	config();
 	await typeSync({
 		url: process.env.VITE_HASS_URL!,
-		token: process.env.VITE_HASS_TOKEN!,
+		token: process.env.HASS_TOKEN!,
 		outDir: "src/generated",
 	});
 }
