@@ -1,12 +1,16 @@
 // create a hook for the home assistant client
 import {
+	Connection,
 	HassConfig,
 	HassEntity,
+	callService,
 	configColl,
 	createConnection,
 	createLongLivedTokenAuth,
+	servicesColl,
 	subscribeConfig,
 	subscribeEntities,
+	subscribeServices,
 } from "home-assistant-js-websocket";
 import {
 	PropsWithChildren,
@@ -39,6 +43,14 @@ export const useHass = () => useContext(HassContext);
 export default function HassProvider({ children }: PropsWithChildren) {
 	const [entityState, setEntityState] = useState<HassEntities | undefined>();
 	const [config, setConfig] = useState<HassConfig | undefined>();
+
+	async function getForecast(conn: Connection) {
+		const data = await callService(conn, "weather", "get_forecast", {
+			type: "daily",
+			response: true,
+		});
+		console.log(data);
+	}
 	useEffect(() => {
 		void (async () => {
 			const auth = createLongLivedTokenAuth(env.HASS_URL, env.HASS_TOKEN);
@@ -55,24 +67,33 @@ export default function HassProvider({ children }: PropsWithChildren) {
 				setConfig(config);
 			});
 
+			const services = servicesColl(conn);
+			await services.refresh();
+			console.log(services.state.weather);
+
+			void getForecast(conn);
+			const HOUR_IN_MS = 60 * 60 * 1000;
+			setInterval(getForecast, HOUR_IN_MS, conn);
+
 			const config = configColl(conn);
 			await config.refresh();
-			console.log(config.state);
 			setConfig(config.state);
 		})();
 	}, []);
 
-	const value: HassContextType = useMemo(
-		() => ({
+	const value = useMemo(() => {
+		const value: HassContextType = {
 			entities: entityState,
 			config,
-		}),
-		[
-			entityState?.climate.last_updated,
-			entityState?.sun.last_updated,
-			entityState?.weather.last_updated,
-		],
-	);
+		};
+		// console.log(value);
+		return value;
+	}, [
+		entityState?.climate.last_updated,
+		entityState?.sun.last_updated,
+		entityState?.weather.last_updated,
+		config,
+	]);
 
 	return <HassContext.Provider value={value}>{children}</HassContext.Provider>;
 }
