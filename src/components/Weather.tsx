@@ -1,29 +1,32 @@
 import { styled } from "@linaria/react";
-import { useHass } from "../hooks/HassProvider.tsx";
+import {
+	useClimateEntity,
+	useSunEntity,
+	useWeatherEntity,
+} from "../hooks/HassProvider.tsx";
 import { startOfDay } from "../lib/dateTime.ts";
 import { getWeatherIcon } from "../lib/weatherIcons.ts";
+import { MergedWeatherForecast } from "../types/Entities.ts";
 import { Card } from "./Card.tsx";
 import { Spinner } from "./Spinner.tsx";
 import { WeeklyForecast } from "./forecast/WeatherForecast.tsx";
 
 export default function Weather() {
-	const { entities } = useHass();
+	const climate = useClimateEntity();
+	const sun = useSunEntity();
+	const weather = useWeatherEntity();
 
-	if (!entities) {
-		return <Spinner />;
-	}
-
-	const { climate, sun, weather } = entities;
 	const {
 		attributes: { current_temperature: indoorTemp },
 	} = climate;
 	const {
-		attributes: {
-			temperature: outdoorTemp,
-			temperature_unit: tempUnit,
-			forecast,
-		},
+		attributes: { temperature: outdoorTemp, temperature_unit: tempUnit },
+		forecast,
 	} = weather;
+
+	if (!forecast || !outdoorTemp) {
+		return <Spinner />;
+	}
 
 	return (
 		<Card>
@@ -44,11 +47,15 @@ export default function Weather() {
 			</CurrentWeather>
 			<Forecast>
 				<WeeklyForecast
-					forecasts={forecast
-						.map((forecast) => ({
-							...forecast,
-							datetime: new Date(forecast.datetime),
-						}))
+					forecasts={forecast.forecast
+						.map(
+							(forecast): MergedWeatherForecast => ({
+								temperature: forecast.temperature,
+								templow: forecast.templow!,
+								condition: forecast.condition!,
+								datetime: new Date(forecast.datetime),
+							}),
+						)
 						.filter((forecast) => forecast.datetime > startOfDay())
 						.slice(0, 5)}
 					currentTemp={outdoorTemp}

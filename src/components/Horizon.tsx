@@ -8,7 +8,7 @@ import {
 import * as React from "react";
 import { useEffect, useRef } from "react";
 import { HorizonCard } from "../../lovelace-horizon-card/src/components/horizonCard";
-import { useHass } from "../hooks/HassProvider.tsx";
+import { useConfig } from "../hooks/HassProvider.tsx";
 import { Spinner } from "./Spinner.tsx";
 
 const HorizonWrapper = createComponent({
@@ -17,7 +17,7 @@ const HorizonWrapper = createComponent({
 	elementClass: HorizonCard,
 });
 export default function Horizon() {
-	const { config } = useHass();
+	const config = useConfig();
 
 	const ref = useRef<HorizonCard | null>(null);
 
