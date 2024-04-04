@@ -46,15 +46,16 @@ export default function Horizon() {
 }
 
 const Wrapper = styled.div`
+	position: relative;
+	top: -8vh;
 	display: flex;
 	flex-direction: column;
 	width: 100%;
 `;
 const NextSolarEvent = styled.time`
-	position: relative;
-	top: -5vh;
 	font-size: 10vh;
-	text-align: right;
+	line-height: 0;
+	text-align: center;
 `;
 
 const HorizonWrapper = createComponent({
