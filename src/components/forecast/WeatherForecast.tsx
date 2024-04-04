@@ -1,15 +1,15 @@
-import { MergedWeatherForecast } from "../../types/Entities.ts";
 import { styled } from "@linaria/react";
+import { renderWeekday } from "../../lib/dateTime.ts";
 import { getWeatherIcon } from "../../lib/weatherIcons.ts";
+import { MergedWeatherForecast } from "../../types/Entities.ts";
 import {
+	Rgb,
 	calculateBarRangePercents,
 	gradient,
 	gradientRange,
 	max,
 	min,
-	Rgb,
 } from "./ForecastHelpers.ts";
-import { renderWeekday } from "../../lib/dateTime.ts";
 
 /**
  * This component is copied and adapted from clock-weather-card
