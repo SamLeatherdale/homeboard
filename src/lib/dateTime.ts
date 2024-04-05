@@ -26,3 +26,27 @@ export function renderWeekday(date: Date = new Date()) {
 export function startOfDay(date: Date = new Date()) {
 	return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 }
+
+export function parseDate(date: string) {
+	return new Date(date);
+}
+
+export function getRelativeFriendlyTime(time: Date, to: Date = new Date()) {
+	if (differenceInMinutes(time, to) === 0) {
+		return "now";
+	}
+	return differenceInHoursAndMinutes(time, to);
+}
+
+function differenceInMinutes(time: Date, to: Date) {
+	return Math.floor((time.getTime() - to.getTime()) / 60000);
+}
+export function differenceInHoursAndMinutes(time: Date, to: Date) {
+	const diff = differenceInMinutes(time, to);
+	const hours = Math.floor(diff / 60);
+	const minutes = diff % 60;
+	if (hours === 0) {
+		return `${minutes}m`;
+	}
+	return `${hours}h${minutes}m`;
+}

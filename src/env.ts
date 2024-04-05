@@ -10,4 +10,6 @@ export const env = {
 		EntityName,
 		"climate"
 	>,
+	ORIGIN_STOP_ID: import.meta.env.VITE_ORIGIN_STOP_ID,
+	DESTINATION_STOP_IDS: import.meta.env.VITE_DESTINATION_STOP_IDS.split(","),
 };

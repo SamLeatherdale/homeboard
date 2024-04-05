@@ -31,8 +31,6 @@ const MainRow = styled.div`
 	grid-template-columns: repeat(3, 33%);
 	width: 100%;
 	height: 100vh;
-	align-items: center;
-	justify-content: space-between;
 `;
 
 export default App;
