@@ -24,7 +24,7 @@ export default function Timetable() {
 	const [responses, setResponses] = useState<TripRequestResponse[]>();
 	const [lastUpdate, setLastUpdate] = useState(new Date());
 	useEffect(() => {
-		void (async () => {
+		async function updateTimetable() {
 			const client = new APIClient();
 			const results = await Promise.all(
 				env.DESTINATION_STOP_IDS.map((destinationId) => {
@@ -43,7 +43,16 @@ export default function Timetable() {
 			);
 			setResponses(results);
 			setLastUpdate(new Date());
-		})();
+		}
+
+		void updateTimetable();
+		const interval = window.setInterval(
+			() => void updateTimetable(),
+			60 * 1000,
+		);
+		return () => {
+			window.clearInterval(interval);
+		};
 	}, []);
 	if (!responses) {
 		return <Spinner />;
