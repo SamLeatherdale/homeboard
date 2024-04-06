@@ -31,22 +31,33 @@ export function parseDate(date: string) {
 	return new Date(date);
 }
 
-export function getRelativeFriendlyTime(time: Date, to: Date = new Date()) {
+export function getRelativeFriendlyTime(
+	time: Date,
+	to: Date,
+	singleUnit: boolean,
+) {
 	if (differenceInMinutes(time, to) === 0) {
 		return "now";
 	}
-	return differenceInHoursAndMinutes(time, to);
+	return differenceInHoursAndMinutes(time, to, singleUnit);
 }
 
 function differenceInMinutes(time: Date, to: Date) {
 	return Math.floor((time.getTime() - to.getTime()) / 60000);
 }
-export function differenceInHoursAndMinutes(time: Date, to: Date) {
+export function differenceInHoursAndMinutes(
+	time: Date,
+	to: Date,
+	singleUnit: boolean,
+) {
 	const diff = differenceInMinutes(time, to);
 	const hours = Math.floor(diff / 60);
 	const minutes = diff % 60;
 	if (hours === 0) {
 		return `${minutes}m`;
+	}
+	if (singleUnit) {
+		return `${hours}h`;
 	}
 	return `${hours}h${minutes}m`;
 }

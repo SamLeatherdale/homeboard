@@ -1,25 +1,15 @@
 import { styled } from "@linaria/react";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import APIClient from "../../trainboard/src/classes/APIClient.ts";
-import {
-	TransportModeId,
-	getLineType,
-	getTransportMode,
-	transportModes,
-} from "../../trainboard/src/classes/LineType.ts";
+import { TransportModeId } from "../../trainboard/src/classes/LineType.ts";
 import { TripRequestResponse } from "../../trainboard/src/models/TripPlanner/tripRequestResponse.ts";
-import { TripRequestResponseJourney } from "../../trainboard/src/models/TripPlanner/tripRequestResponseJourney.ts";
-import { TripRequestResponseJourneyLeg } from "../../trainboard/src/models/TripPlanner/tripRequestResponseJourneyLeg.ts";
 import { env } from "../env.ts";
-import {
-	differenceInHoursAndMinutes,
-	getRelativeFriendlyTime,
-	parseDate,
-	renderTime,
-} from "../lib/dateTime.ts";
+import { parseDate } from "../lib/dateTime.ts";
 import { CenterCard } from "./Card.tsx";
 import { Spinner } from "./Spinner.tsx";
+import { TripRow } from "./timetable/TripRow.tsx";
 
+const DISPLAYED_TRIPS = 3;
 export default function Timetable() {
 	const [responses, setResponses] = useState<TripRequestResponse[]>();
 	const [lastUpdate, setLastUpdate] = useState(new Date());
@@ -60,19 +50,27 @@ export default function Timetable() {
 
 	return (
 		<TripsCard>
-			{responses.map((response, i) => (
-				<TripList
-					key={`${i}-${lastUpdate.toISOString()}`}
-					response={response}
-				/>
-			))}
+			{responses.map((response, i) => {
+				const [first] = response.journeys;
+				const { legs } = first;
+				const lastLeg = legs[legs.length - 1];
+				return (
+					<Fragment key={`${i}-${lastUpdate.toISOString()}`}>
+						<Title>{getTitle(lastLeg.destination.name)}</Title>
+						<TripList response={response} />
+					</Fragment>
+				);
+			})}
 		</TripsCard>
 	);
 }
 
 const TripsCard = styled(CenterCard)`
+	--trip-height: 25vh;
 	display: grid;
+	grid-auto-flow: column;
 	grid-template-columns: repeat(2, 50%);
+	grid-template-rows: auto repeat(${DISPLAYED_TRIPS}, var(--trip-height));
 	grid-gap: 2vh;
 `;
 
@@ -81,119 +79,36 @@ function TripList({
 }: {
 	response: TripRequestResponse;
 }) {
-	const [first] = journeys;
-	const { legs } = first;
-	const lastLeg = legs[legs.length - 1];
-
 	return (
-		<TripStack>
-			<Title>{getTitle(lastLeg.destination.name)}</Title>
-			<Trips>
-				{journeys
-					.filter(
-						(journey) =>
-							parseDate(journey.legs[0].origin.departureTimeEstimated) >
-							new Date(),
-					)
-					.slice(0, 4)
-					.map((journey, i) => (
-						<TripItem
-							key={journey.legs
-								.map((leg) => leg.transportation?.id || "none")
-								.concat([i.toString()])
-								.join(";")}
-							trip={journey}
-						/>
-					))}
-			</Trips>
-		</TripStack>
+		<>
+			{journeys
+				.filter(
+					(journey) =>
+						parseDate(journey.legs[0].origin.departureTimeEstimated) >
+						new Date(),
+				)
+				.slice(0, DISPLAYED_TRIPS)
+				.map((journey, i) => (
+					<TripRow
+						key={journey.legs
+							.map((leg) => leg.transportation?.id || "none")
+							.concat([i.toString()])
+							.join(";")}
+						trip={journey}
+					/>
+				))}
+		</>
 	);
 }
 
-const TripStack = styled.div`
-	display: flex;
-	flex-direction: column;
-`;
 const Title = styled.h2`
 	font-family: var(--font-sans);
 	font-size: 7.5vh;
 	margin: 0;
 	text-align: center;
 `;
-const Trips = styled.ol`
-	list-style: none;
-	padding: 0;
-`;
 
 function getTitle(name: string) {
 	const [first] = name.split(",");
 	return first.replace(" Station", "");
 }
-
-function TripItem({ trip: { legs } }: { trip: TripRequestResponseJourney }) {
-	const [first] = legs;
-	const last = legs[legs.length - 1];
-	const departureEst = parseDate(first.origin.departureTimeEstimated);
-	const arrivalEst = parseDate(last.destination.arrivalTimeEstimated);
-	return (
-		<Row>
-			<TripIcon leg={first} />
-			<TimeStack>
-				<Time>{differenceInHoursAndMinutes(arrivalEst, departureEst)}</Time>
-				<Time>{renderTime(arrivalEst)}</Time>
-			</TimeStack>
-		</Row>
-	);
-}
-
-const Row = styled.li`
-	list-style: none;
-	display: grid;
-	grid-template-columns: auto 1fr;
-`;
-const TimeStack = styled.div`
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	padding-left: 3vh;
-	border: 1px solid #ccc;
-	border-bottom-right-radius: 2vh;
-	border-top-right-radius: 2vh;
-`;
-const Time = styled.time`
-	font-size: 6vh;
-`;
-
-export function TripIcon({ leg }: { leg: TripRequestResponseJourneyLeg }) {
-	const departureEst = parseDate(leg.origin.departureTimeEstimated);
-	const tripName = leg.transportation?.disassembledName?.toUpperCase();
-	const transportMode = getTransportMode(leg.transportation?.product?.iconId);
-
-	const isTrain = transportMode?.id === TransportModeId.Train;
-	let color = transportModes[TransportModeId.Walk].color;
-	if (isTrain && tripName) {
-		// eslint-disable-next-line
-		color = getLineType(tripName).color;
-	} else if (transportMode && tripName) {
-		color = transportMode.color;
-	}
-	return (
-		<TransportIcon color={color}>
-			<span>{getRelativeFriendlyTime(departureEst)}</span>
-		</TransportIcon>
-	);
-}
-
-const TransportIcon = styled.div<{
-	color: string;
-}>`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 20vh;
-	height: 20vh;
-	font-size: 6vh;
-	background-color: ${(props) => props.color};
-	border-bottom-left-radius: 2vh;
-	border-top-left-radius: 2vh;
-`;
