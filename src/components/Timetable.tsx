@@ -1,5 +1,5 @@
 import { styled } from "@linaria/react";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import APIClient from "../../trainboard/src/classes/APIClient.ts";
 import { TransportModeId } from "../../trainboard/src/classes/LineType.ts";
 import { TripRequestResponse } from "../../trainboard/src/models/TripPlanner/tripRequestResponse.ts";
@@ -50,17 +50,12 @@ export default function Timetable() {
 
 	return (
 		<TripsCard>
-			{responses.map((response, i) => {
-				const [first] = response.journeys;
-				const { legs } = first;
-				const lastLeg = legs[legs.length - 1];
-				return (
-					<Fragment key={`${i}-${lastUpdate.toISOString()}`}>
-						<Title>{getTitle(lastLeg.destination.name)}</Title>
-						<TripList response={response} />
-					</Fragment>
-				);
-			})}
+			{responses.map((response, i) => (
+				<TripList
+					key={`${i}-${lastUpdate.toISOString()}`}
+					response={response}
+				/>
+			))}
 		</TripsCard>
 	);
 }
@@ -68,7 +63,6 @@ export default function Timetable() {
 const TripsCard = styled(CenterCard)`
 	--trip-height: 25vh;
 	display: grid;
-	grid-auto-flow: column;
 	grid-template-columns: repeat(2, 50%);
 	grid-template-rows: auto repeat(${DISPLAYED_TRIPS}, var(--trip-height));
 	grid-gap: 2vh;
@@ -79,8 +73,12 @@ function TripList({
 }: {
 	response: TripRequestResponse;
 }) {
+	const [first] = journeys;
+	const { legs } = first;
+	const lastLeg = legs[legs.length - 1];
 	return (
-		<>
+		<TripColumn>
+			<Title>{getTitle(lastLeg.destination.name)}</Title>
 			{journeys
 				.filter(
 					(journey) =>
@@ -97,9 +95,15 @@ function TripList({
 						trip={journey}
 					/>
 				))}
-		</>
+		</TripColumn>
 	);
 }
+
+const TripColumn = styled.div`
+	display: grid;
+	grid-row: 1 / -1;
+	grid-template-rows: subgrid;
+`;
 
 const Title = styled.h2`
 	font-family: var(--font-sans);

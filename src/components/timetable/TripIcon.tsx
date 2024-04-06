@@ -42,13 +42,14 @@ const TransportIcon = styled.div<{
 	border-bottom-left-radius: 2vh;
 	border-top-left-radius: 2vh;
 `;
-const shadow = 3;
 const DepartureTime = styled.time`
+	--shadow-size-positive: 3px;
+	--shadow-size-negative: -3px;
 	--shadow-color: #111;
 	font-size: 10vh;
 	text-shadow:
-		${shadow}px ${shadow}px 0 var(--shadow-color),
-		-${shadow}px ${shadow}px 0 var(--shadow-color),
-		-${shadow}px -${shadow}px 0 var(--shadow-color),
-		${shadow}px -${shadow}px 0 var(--shadow-color);
+		var(--shadow-size-positive) var(--shadow-size-positive) var(--shadow-color),
+		var(--shadow-size-negative) var(--shadow-size-positive) var(--shadow-color),
+		var(--shadow-size-negative) var(--shadow-size-negative) var(--shadow-color),
+		var(--shadow-size-positive) var(--shadow-size-negative) var(--shadow-color);
 `;
