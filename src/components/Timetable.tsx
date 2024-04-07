@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import APIClient from "../../trainboard/src/classes/APIClient.ts";
 import { TransportModeId } from "../../trainboard/src/classes/LineType.ts";
 import { TripRequestResponse } from "../../trainboard/src/models/TripPlanner/tripRequestResponse.ts";
+import { TripRequestResponseJourney } from "../../trainboard/src/models/TripPlanner/tripRequestResponseJourney.ts";
+import { TripRequestResponseJourneyLeg } from "../../trainboard/src/models/TripPlanner/tripRequestResponseJourneyLeg.ts";
 import { env } from "../env.ts";
 import { parseDate } from "../lib/dateTime.ts";
 import { CenterCard } from "./Card.tsx";
@@ -19,7 +21,7 @@ export default function Timetable() {
 			const results = await Promise.all(
 				env.DESTINATION_STOP_IDS.map((destinationId) => {
 					return client.getTrips(env.ORIGIN_STOP_ID, destinationId, {
-						tripCount: 5,
+						tripCount: 10,
 						excludedModes: [
 							TransportModeId.Bus,
 							TransportModeId.Coach,
@@ -76,26 +78,41 @@ function TripList({
 	const [first] = journeys;
 	const { legs } = first;
 	const lastLeg = legs[legs.length - 1];
+	const uniqueJourneys = journeys
+		.filter(
+			({ legs: [first] }) =>
+				parseDate(first.origin.departureTimeEstimated) > new Date(),
+		)
+		.reduce((map, journey) => {
+			const [first] = journey.legs;
+			const id = getLegId(first);
+			if (!map.has(id)) {
+				map.set(id, journey);
+			}
+			return map;
+		}, new Map<string, TripRequestResponseJourney>());
+	const filteredJourneys = [...uniqueJourneys.values()].slice(
+		0,
+		DISPLAYED_TRIPS,
+	);
 	return (
 		<TripColumn>
 			<Title>{getTitle(lastLeg.destination.name)}</Title>
-			{journeys
-				.filter(
-					(journey) =>
-						parseDate(journey.legs[0].origin.departureTimeEstimated) >
-						new Date(),
-				)
-				.slice(0, DISPLAYED_TRIPS)
-				.map((journey, i) => (
-					<TripRow
-						key={journey.legs
-							.map((leg) => leg.transportation?.id || "none")
-							.concat([i.toString()])
-							.join(";")}
-						trip={journey}
-					/>
-				))}
+			{filteredJourneys.map((journey, i) => (
+				<TripRow
+					key={journey.legs.map(getLegId).concat([i.toString()]).join(";")}
+					trip={journey}
+				/>
+			))}
 		</TripColumn>
+	);
+}
+
+function getLegId(leg: TripRequestResponseJourneyLeg) {
+	return (
+		leg.transportation?.properties?.RealtimeTripId ||
+		leg.transportation?.id ||
+		"none"
 	);
 }
 
