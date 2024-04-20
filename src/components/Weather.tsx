@@ -8,7 +8,7 @@ import { startOfDay } from "../lib/dateTime.ts";
 import { getWeatherIcon } from "../lib/weatherIcons.ts";
 import { MergedWeatherForecast } from "../types/Entities.ts";
 import { Card } from "./Card.tsx";
-import { Spinner } from "./Spinner.tsx";
+import { Loader } from "./Loader.tsx";
 import { WeeklyForecast } from "./forecast/WeatherForecast.tsx";
 
 export default function Weather() {
@@ -25,7 +25,7 @@ export default function Weather() {
 	} = weather;
 
 	if (!forecast || !outdoorTemp) {
-		return <Spinner />;
+		return <Loader />;
 	}
 
 	return (

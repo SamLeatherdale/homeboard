@@ -8,7 +8,7 @@ import { TripRequestResponseJourneyLeg } from "../../trainboard/src/models/TripP
 import { env } from "../env.ts";
 import { parseDate } from "../lib/dateTime.ts";
 import { CenterCard } from "./Card.tsx";
-import { Spinner } from "./Spinner.tsx";
+import { Loader } from "./Loader.tsx";
 import { TripRow } from "./timetable/TripRow.tsx";
 
 const DISPLAYED_TRIPS = 3;
@@ -47,7 +47,7 @@ export default function Timetable() {
 		};
 	}, []);
 	if (!responses) {
-		return <Spinner />;
+		return <Loader />;
 	}
 
 	return (

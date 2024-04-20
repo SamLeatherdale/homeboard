@@ -11,7 +11,7 @@ import { HorizonCard } from "../../lovelace-horizon-card/src/components/horizonC
 import { useConfig, useSunEntity } from "../hooks/HassProvider.tsx";
 import { renderTimeWithSuffix } from "../lib/dateTime.ts";
 import { SunAttributes } from "../types/Entities.ts";
-import { Spinner } from "./Spinner.tsx";
+import { Loader } from "./Loader.tsx";
 
 export default function Horizon() {
 	const sun = useSunEntity();
@@ -104,7 +104,7 @@ function HorizonGraph() {
 	}, [ref.current, config]);
 
 	if (!config) {
-		return <Spinner />;
+		return <Loader />;
 	}
 
 	return <HorizonWrapper ref={ref} />;
