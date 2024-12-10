@@ -6,6 +6,10 @@
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
+		"git:submodule": "git submodule update --init --recursive",
+		"install:all": "npm run install:horizon && npm run install:trainboard",
+		"install:horizon": "cd lovelace-horizon-card && npx yarn install",
+		"install:trainboard": "cd trainboard && npm install",
     "lint": "eslint --ext ts,tsx --report-unused-disable-directives",
     "lint:all": "npm run lint -- src",
     "lint:fix": "npm run lint -- --fix",
@@ -16,14 +20,14 @@
     "types:gen": "tsx generate-types.ts"
   },
   "dependencies": {
-    "@hakit/core": "^3.1.4",
+    "@hakit/core": "^4.0.3",
     "@linaria/core": "^6.1.0",
     "@linaria/react": "^6.1.0",
     "@lit/react": "^1.0.4",
     "@wyw-in-js/vite": "^0.5.0",
     "custom-card-helpers": "^1.9.0",
     "gtfs-realtime-bindings": "^1.1.1",
-    "home-assistant-js-websocket": "^9.1.0",
+    "home-assistant-js-websocket": "^9.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-screen-burn": "^1.0.11"
@@ -36,7 +40,7 @@
     "@types/react-dom": "^18.2.21",
     "@typescript-eslint/eslint-plugin": "^7.1.1",
     "@typescript-eslint/parser": "^7.1.1",
-    "@vitejs/plugin-react": "^4.2.1",
+    "@vitejs/plugin-react": "^4.3.4",
     "dotenv-flow": "^4.1.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
@@ -49,6 +53,6 @@
     "prettier": "^3.2.5",
     "tsx": "^4.7.2",
     "typescript": "^5.2.2",
-    "vite": "^5.1.6"
+    "vite": "^6.0.3"
   }
 }
