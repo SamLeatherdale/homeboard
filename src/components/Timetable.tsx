@@ -1,5 +1,7 @@
 import { styled } from "@linaria/react";
 import { useEffect, useState } from "react";
+import track1 from "../../public/track1.mp3";
+import track2 from "../../public/track2.mp3";
 import APIClient from "../../trainboard/src/classes/APIClient.ts";
 import { TransportModeId } from "../../trainboard/src/classes/LineType.ts";
 import { TripRequestResponse } from "../../trainboard/src/models/TripPlanner/tripRequestResponse.ts";
@@ -9,7 +11,10 @@ import { env } from "../env.ts";
 import { parseDate } from "../lib/dateTime.ts";
 import { CenterCard } from "./Card.tsx";
 import { Loader } from "./Loader.tsx";
+import { AudioPlayer } from "./timetable/AudioPlayer.tsx";
 import { TripRow } from "./timetable/TripRow.tsx";
+
+const tracks = [track1, track2];
 
 const DISPLAYED_TRIPS = 3;
 export default function Timetable() {
@@ -55,6 +60,7 @@ export default function Timetable() {
 			{responses.map((response, i) => (
 				<TripList
 					key={`${i}-${lastUpdate.toISOString()}`}
+					index={i}
 					response={response}
 				/>
 			))}
@@ -66,14 +72,16 @@ const TripsCard = styled(CenterCard)`
 	--trip-height: 25vh;
 	display: grid;
 	grid-template-columns: repeat(2, 50%);
-	grid-template-rows: auto repeat(${DISPLAYED_TRIPS}, var(--trip-height));
+	grid-template-rows: auto auto repeat(${DISPLAYED_TRIPS}, var(--trip-height));
 	grid-gap: 2vh;
 `;
 
 function TripList({
 	response: { journeys },
+	index,
 }: {
 	response: TripRequestResponse;
+	index: number;
 }) {
 	const [first] = journeys;
 	const { legs } = first;
@@ -97,7 +105,11 @@ function TripList({
 	);
 	return (
 		<TripColumn>
-			<Title>{getTitle(lastLeg.destination.name)}</Title>
+			<Title>
+				{getTitle(lastLeg.destination.name)}
+
+				<AudioPlayer src={tracks[index]} />
+			</Title>
 			{filteredJourneys.map((journey, i) => (
 				<TripRow
 					key={journey.legs.map(getLegId).concat([i.toString()]).join(";")}
