@@ -1,21 +1,13 @@
 import { styled } from "@linaria/react";
-import { TripRequestResponseJourney } from "../../../trainboard/src/models/TripPlanner/tripRequestResponseJourney.ts";
-import {
-	differenceInHoursAndMinutes,
-	parseDate,
-	renderTime,
-} from "../../lib/dateTime.ts";
+import { TPJourney } from "../../../trainboard/src/models/TripPlanner/custom/TPJourney.ts";
+import { differenceInHoursAndMinutes, renderTime } from "../../lib/dateTime.ts";
 import { TripIcon } from "./TripIcon.tsx";
 
-export function TripRow({
-	trip: { legs },
-}: {
-	trip: TripRequestResponseJourney;
-}) {
+export function TripRow({ trip: { legs } }: { trip: TPJourney }) {
 	const [first] = legs;
 	const last = legs[legs.length - 1];
-	const departureEst = parseDate(first.origin.departureTimeEstimated);
-	const arrivalEst = parseDate(last.destination.arrivalTimeEstimated);
+	const departureEst = first.origin.departureTimeEstimated;
+	const arrivalEst = last.destination.arrivalTimeEstimated;
 	return (
 		<Row>
 			<TripIcon leg={first} />

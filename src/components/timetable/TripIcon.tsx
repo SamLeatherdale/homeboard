@@ -5,11 +5,11 @@ import {
 	getTransportMode,
 	transportModes,
 } from "../../../trainboard/src/classes/LineType.ts";
-import { TripRequestResponseJourneyLeg } from "../../../trainboard/src/models/TripPlanner/tripRequestResponseJourneyLeg.ts";
-import { getRelativeFriendlyTime, parseDate } from "../../lib/dateTime.ts";
+import { TPLeg } from "../../../trainboard/src/models/TripPlanner/custom/TPLeg.ts";
+import { getRelativeFriendlyTime } from "../../lib/dateTime.ts";
 
-export function TripIcon({ leg }: { leg: TripRequestResponseJourneyLeg }) {
-	const departureEst = parseDate(leg.origin.departureTimeEstimated);
+export function TripIcon({ leg }: { leg: TPLeg }) {
+	const departureEst = leg.origin.departureTimeEstimated;
 	const tripName = leg.transportation?.disassembledName?.toUpperCase();
 	const transportMode = getTransportMode(leg.transportation?.product?.iconId);
 
