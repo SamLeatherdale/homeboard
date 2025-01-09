@@ -119,7 +119,7 @@ function ForecastItem({
 const Day = styled.div`
 	display: flex;
 	align-items: center;
-	gap: 2rem;
+	gap: 0.5rem;
 `;
 const SmallIcon = styled.img`
 	width: 10vh;
@@ -127,8 +127,7 @@ const SmallIcon = styled.img`
 `;
 
 const SmallTemp = styled.span`
-	font-size: 5vh;
-	min-width: 6vh;
+	font-size: 10vh;
 	text-align: right;
 `;
 
@@ -235,7 +234,7 @@ const CurrentIndicatorDot = styled.span<{ moveRight: number }>`
 	background-color: var(--indicator-dot);
 	border-radius: 50%;
 	width: var(--bar-height);
-	box-shadow: inset 0 0 0 2px var(--indicator-dot-shadow);
+	box-shadow: inset 0 0 0 4px var(--indicator-dot-shadow);
 	margin-left: calc(${(props) => props.moveRight} * -1 * var(--bar-height));
 `;
 
@@ -245,6 +244,7 @@ const TempBar = styled.div`
 	height: var(--bar-height);
 	border-radius: calc(var(--bar-height) / 2);
 	overflow: hidden;
+	margin: 0 0.5rem;
 
 	${TempBarBackground}, ${TempBarRange}, ${CurrentIndicator}, ${CurrentIndicatorDot} {
 		height: 100%;

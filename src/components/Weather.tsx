@@ -12,6 +12,7 @@ import { Loader } from "./Loader.tsx";
 import { WeeklyForecast } from "./forecast/WeatherForecast.tsx";
 
 export default function Weather() {
+	const FORECAST_DAYS = 3;
 	const climate = useClimateEntity();
 	const sun = useSunEntity();
 	const weather = useWeatherEntity();
@@ -57,7 +58,7 @@ export default function Weather() {
 							}),
 						)
 						.filter((forecast) => forecast.datetime > startOfDay())
-						.slice(0, 5)}
+						.slice(0, FORECAST_DAYS)}
 					currentTemp={outdoorTemp}
 				/>
 			</Forecast>
@@ -95,5 +96,8 @@ const Temp = styled.span`
 `;
 
 const Forecast = styled.div`
-	padding-left: 2rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 100%;
 `;

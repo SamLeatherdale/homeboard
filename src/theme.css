@@ -16,7 +16,7 @@
 	:root {
 		--color-border: #eee;
 		--bar-background: #111;
-		--indicator-dot: #fff;
-		--indicator-dot-shadow: #bbb;
+		--indicator-dot: #ffffff;
+		--indicator-dot-shadow: #000;
 	}
 }
