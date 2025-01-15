@@ -5,7 +5,7 @@ interface EnvConfig {
 	ENTITY_WEATHER: FilterByDomain<EntityName, "weather">;
 	ENTITY_CLIMATE: FilterByDomain<EntityName, "climate">;
 	ORIGIN_STOP_ID: string;
-	DESTINATION_STOP_IDS: string;
+	DESTINATION_STOP_IDS: string[];
 }
 
 const envKeys = [
@@ -40,7 +40,7 @@ function getConfigFromUrl() {
 }
 
 export function getEnvAsQueryParams() {
-	return new URLSearchParams(getConfigFromEnv());
+	return new URLSearchParams(getConfigFromEnv() || {});
 }
 
 function getConfigFromStorage() {
@@ -51,7 +51,7 @@ function getConfigFromStorage() {
 	return validateEnv(env) ? env : null;
 }
 
-function saveConfigToStorage(env: EnvConfig) {
+function saveConfigToStorage(env: Record<string, string>) {
 	localStorage.setItem(STORAGE_KEY, JSON.stringify(env));
 }
 
