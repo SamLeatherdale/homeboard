@@ -1,5 +1,12 @@
 # Homeboard
 
+## Components
+
+This repo uses the following third party components:
+
+- [Clock Weather Card](https://github.com/pkissling/clock-weather-card)
+- [Lovelace Horizon Card](https://github.com/rejuvenate/lovelace-horizon-card)
+
 ## Setup
 
 1. Initialize git submodules
