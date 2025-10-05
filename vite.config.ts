@@ -8,9 +8,6 @@ export default defineConfig({
 	build: {
 		sourcemap: true,
 	},
-	resolve: {
-		dedupe: ["react", "react-dom"],
-	},
 	plugins: [
 		react({
 			babel: {

@@ -1,6 +1,5 @@
 import { styled } from "@linaria/react";
 import { useEffect } from "react";
-import { ScreenBurnLine } from "react-screen-burn";
 import "./App.css";
 import DateTime from "./components/DateTime.tsx";
 import Timetable from "./components/Timetable.tsx";
@@ -14,17 +13,8 @@ function App() {
 		history.replaceState(null, "", `#${envParams}`);
 	}, [envParams]);
 
-	const MINUTE_MS = 60 * 1000;
 	return (
 		<HassProvider>
-			{/* @ts-expect-error Component type is incorrect */}
-			<ScreenBurnLine
-				colors={["#ff0000", "#00ff00", "#0000ff"]}
-				triggerTime={10 * MINUTE_MS}
-				retriggerTime={10 * MINUTE_MS}
-				// @ts-expect-error Size is not a valid prop
-				size={5}
-			/>
 			<MainRow>
 				<Weather />
 				<DateTime />
