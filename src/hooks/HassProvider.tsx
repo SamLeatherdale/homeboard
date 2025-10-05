@@ -8,6 +8,7 @@ import {
 	useEffect,
 	useState,
 } from "react";
+import { LoaderError } from "../components/Loader.tsx";
 import { env } from "../env.ts";
 
 type HassContextType = {
@@ -41,7 +42,12 @@ export default function HassProvider({ children }: PropsWithChildren) {
 		<HassConnect
 			hassUrl={env.HASS_URL}
 			options={{
-				allowNonSecure: true,
+				renderError: (error) => <LoaderError>{error}</LoaderError>,
+				handleResumeOptions: {
+					onStatusChange: (status) => {
+						console.log("Connection status:", status);
+					},
+				},
 			}}
 		>
 			<HassContextProvider>{children}</HassContextProvider>

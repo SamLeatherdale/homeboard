@@ -1,12 +1,15 @@
 import { EntityName, type FilterByDomain } from "@hakit/core";
 
-interface EnvConfig {
+type EnvConfigStr = Omit<EnvConfig, "DESTINATION_STOP_IDS"> & {
+	DESTINATION_STOP_IDS: string;
+};
+type EnvConfig = {
 	HASS_URL: string;
 	ENTITY_WEATHER: FilterByDomain<EntityName, "weather">;
 	ENTITY_CLIMATE: FilterByDomain<EntityName, "climate">;
 	ORIGIN_STOP_ID: string;
 	DESTINATION_STOP_IDS: string[];
-}
+};
 
 const envKeys = [
 	"HASS_URL",
@@ -18,7 +21,7 @@ const envKeys = [
 
 const STORAGE_KEY = "homeboard_config";
 
-function validateEnv(env: Record<string, unknown>) {
+function validateEnv(env: Record<string, unknown>): env is EnvConfigStr {
 	return envKeys.every((key) => env[key]);
 }
 

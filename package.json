@@ -6,10 +6,10 @@
   "scripts": {
     "start": "vite",
     "build": "vite build",
-		"git:submodule": "git submodule update --init --recursive",
-		"install:all": "npm run install:horizon && npm run install:trainboard",
-		"install:horizon": "cd lovelace-horizon-card && npx yarn install",
-		"install:trainboard": "cd trainboard && npm install",
+    "git:submodule": "git submodule update --init --recursive",
+    "install:all": "npm run install:horizon && npm run install:trainboard",
+    "install:horizon": "cd lovelace-horizon-card && npx yarn install",
+    "install:trainboard": "cd trainboard && npm install",
     "lint": "eslint --ext ts,tsx --report-unused-disable-directives",
     "lint:all": "npm run lint -- src",
     "lint:fix": "npm run lint -- --fix",
@@ -20,7 +20,7 @@
     "types:gen": "tsx generate-types.ts"
   },
   "dependencies": {
-    "@hakit/core": "^4.0.3",
+    "@hakit/core": "^5.1.5",
     "@linaria/core": "^6.1.0",
     "@linaria/react": "^6.1.0",
     "@lit/react": "^1.0.4",
@@ -28,8 +28,8 @@
     "custom-card-helpers": "^1.9.0",
     "gtfs-realtime-bindings": "^1.1.1",
     "home-assistant-js-websocket": "^9.4.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "react-screen-burn": "^1.0.11"
   },
   "devDependencies": {
