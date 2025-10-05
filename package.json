@@ -40,7 +40,7 @@
     "@types/react-dom": "^19.2.0",
     "@typescript-eslint/eslint-plugin": "^7.1.1",
     "@typescript-eslint/parser": "^7.1.1",
-    "@vitejs/plugin-react": "^4.3.4",
+    "@vitejs/plugin-react": "5.0.2",
     "dotenv-flow": "^4.1.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
@@ -53,6 +53,7 @@
     "prettier": "^3.2.5",
     "tsx": "^4.7.2",
     "typescript": "^5.9.3",
-    "vite": "^6.0.3"
+    "vite": "^7.1.9",
+    "vite-bundle-analyzer": "^1.2.3"
   }
 }
