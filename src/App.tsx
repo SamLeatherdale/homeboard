@@ -17,6 +17,7 @@ function App() {
 	const MINUTE_MS = 60 * 1000;
 	return (
 		<HassProvider>
+			{/* @ts-expect-error Component type is incorrect */}
 			<ScreenBurnLine
 				colors={["#ff0000", "#00ff00", "#0000ff"]}
 				triggerTime={10 * MINUTE_MS}
