@@ -9,21 +9,27 @@ This repo uses the following third party components:
 
 ## Setup
 
+Requires [pnpm](https://pnpm.io/) (see `packageManager` in `package.json`).
+
 1. Initialize git submodules
    ```bash
-   npm run git:submodule
+   pnpm run git:submodule
    ```
-2. Install dependencies (parent and submodules)
+2. Install root dependencies
    ```bash
-   npm run install:all
+   pnpm install
    ```
-3. Copy the `.env.example` file to `.env.local` and fill in values
+3. Install submodule dependencies
+   ```bash
+   pnpm run install:all
+   ```
+4. Copy the `.env.example` file to `.env.local` and fill in values
    ```bash
    cp .env.example .env.local
    ```
-4. Start the development server
+5. Start the development server
    ```bash
-   npm run dev
+   pnpm start
    ```
 
 ## Deployment
