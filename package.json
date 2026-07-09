@@ -20,14 +20,14 @@
     "types:gen": "tsx generate-types.ts"
   },
   "dependencies": {
-    "@hakit/core": "^5.1.5",
+    "@hakit/core": "^6.0.2",
     "@linaria/core": "^6.1.0",
     "@linaria/react": "^6.1.0",
     "@lit/react": "^1.0.8",
     "@wyw-in-js/vite": "^0.5.0",
     "custom-card-helpers": "^1.9.0",
     "gtfs-realtime-bindings": "^1.1.1",
-    "home-assistant-js-websocket": "^9.4.0",
+    "home-assistant-js-websocket": "^9.6.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },
