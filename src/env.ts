@@ -3,6 +3,7 @@ import { EntityName, type FilterByDomain } from "@hakit/core";
 function getEnv() {
 	const env = {
 		HASS_URL: import.meta.env.VITE_HASS_URL,
+		HASS_TOKEN: import.meta.env.VITE_HASS_TOKEN as string | undefined,
 		ENTITY_WEATHER: import.meta.env.VITE_ENTITY_WEATHER as FilterByDomain<
 			EntityName,
 			"weather"
@@ -16,6 +17,9 @@ function getEnv() {
 	};
 
 	Object.entries(env).forEach(([key, value]) => {
+		if (key === "HASS_TOKEN") {
+			return;
+		}
 		if (!value) {
 			throw new Error(`Missing env var: ${key}`);
 		}

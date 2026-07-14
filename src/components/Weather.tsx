@@ -50,14 +50,14 @@ export default function Weather() {
 				<WeeklyForecast
 					forecasts={forecast.forecast
 						.map(
-							(forecast): MergedWeatherForecast => ({
-								temperature: forecast.temperature,
-								templow: forecast.templow!,
-								condition: forecast.condition!,
-								datetime: new Date(forecast.datetime),
+							(day): MergedWeatherForecast => ({
+								temperature: day.temperature,
+								templow: day.templow!,
+								condition: day.condition!,
+								datetime: new Date(day.datetime),
 							}),
 						)
-						.filter((forecast) => forecast.datetime > startOfDay())
+						.filter((day) => day.datetime >= startOfDay())
 						.slice(0, FORECAST_DAYS)}
 					currentTemp={outdoorTemp}
 				/>
@@ -98,6 +98,5 @@ const Temp = styled.span`
 const Forecast = styled.div`
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
-	height: 100%;
+	gap: 1vh;
 `;
