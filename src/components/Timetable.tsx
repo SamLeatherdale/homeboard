@@ -62,7 +62,7 @@ export default function Timetable() {
 		<TripsCard>
 			{responses.map((response, i) => (
 				<TripList
-					key={`${i}-${lastUpdate.toISOString()}`}
+					key={`${String(i)}-${lastUpdate.toISOString()}`}
 					response={response}
 				/>
 			))}
@@ -80,6 +80,9 @@ const TripsCard = styled(CenterCard)`
 
 function TripList({ response: { journeys } }: { response: TPResponse }) {
 	const [first] = journeys;
+	if (!journeys.length) {
+		return <Title>No trips!</Title>;
+	}
 	const { legs } = first;
 	const lastLeg = legs[legs.length - 1];
 	const uniqueJourneys = journeys

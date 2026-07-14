@@ -24,11 +24,8 @@ export function useWeatherForecast(
 	entityId: string = env.ENTITY_WEATHER,
 	forecastType: WeatherForecastEvent["type"] = "daily",
 ) {
-	const { useStore } = useHass();
-	const connection = useStore((state) => state.connection) as
-		| Connection
-		| null
-		| undefined;
+	const connection = useHass((state) => state.connection) as
+		Connection | null | undefined;
 	const [forecast, setForecast] = useState<WeatherForecastEvent | null>(null);
 
 	useEffect(() => {

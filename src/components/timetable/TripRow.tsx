@@ -27,6 +27,7 @@ const Row = styled.div`
 `;
 const TimeStack = styled.div`
 	display: flex;
+	overflow: hidden;
 	flex-direction: column;
 	justify-content: center;
 	padding-left: 3vh;
@@ -37,4 +38,5 @@ const TimeStack = styled.div`
 `;
 const Time = styled.time`
 	font-size: 7.5vh;
+	white-space: nowrap;
 `;

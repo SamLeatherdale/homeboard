@@ -15,13 +15,16 @@ export default function DateTime() {
 		};
 	}, []);
 	return (
-		<CenterCard>
+		<DateTimeCard>
 			<StyledTime>{renderTime(time).replace(/\s/, "")}</StyledTime>
 			<StyledDate>{renderDate(time)}</StyledDate>
 			<Horizon />
-		</CenterCard>
+		</DateTimeCard>
 	);
 }
+const DateTimeCard = styled(CenterCard)`
+	justify-content: space-between;
+`;
 const StyledTime = styled.time`
 	display: block;
 	font-size: 25vh;

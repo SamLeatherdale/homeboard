@@ -1,9 +1,13 @@
 import react from "@vitejs/plugin-react";
 import wyw from "@wyw-in-js/vite";
 import { defineConfig } from "vite";
+import analyzer from "vite-bundle-analyzer";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+	build: {
+		sourcemap: true,
+	},
 	plugins: [
 		react({
 			babel: {
@@ -22,6 +26,11 @@ export default defineConfig({
 		wyw({
 			include: ["**/*.{ts,tsx}"],
 			exclude: ["lovelace-horizon-card/**/*"],
+		}),
+		analyzer({
+			analyzerMode: "static",
+			// Outputs to dist/stats.html
+			fileName: "stats",
 		}),
 	],
 });
