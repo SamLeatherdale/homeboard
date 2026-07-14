@@ -3,9 +3,10 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "packageManager": "pnpm@10.28.2",
+  "packageManager": "pnpm@11.13.0",
   "scripts": {
-    "start": "vite",
+    "dev": "vite",
+    "start": "pnpm run dev",
     "build": "vite build",
     "git:submodule": "git submodule update --init --recursive",
     "install:all": "pnpm run install:horizon && pnpm run install:trainboard",

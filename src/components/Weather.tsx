@@ -48,22 +48,30 @@ export default function Weather() {
 			</CurrentWeather>
 			<Forecast>
 				<WeeklyForecast
-					forecasts={forecast.forecast
-						.map(
-							(day): MergedWeatherForecast => ({
+					forecasts={padForecasts(
+						forecast.forecast
+							.map((day): MergedWeatherForecast => ({
 								temperature: day.temperature,
 								templow: day.templow!,
 								condition: day.condition!,
 								datetime: new Date(day.datetime),
-							}),
-						)
-						.filter((day) => day.datetime >= startOfDay())
-						.slice(0, FORECAST_DAYS)}
+							}))
+							.filter((day) => day.datetime >= startOfDay())
+							.slice(0, FORECAST_DAYS),
+						FORECAST_DAYS,
+					)}
 					currentTemp={outdoorTemp}
 				/>
 			</Forecast>
 		</Card>
 	);
+}
+
+function padForecasts(
+	forecasts: MergedWeatherForecast[],
+	count: number,
+): (MergedWeatherForecast | null)[] {
+	return Array.from({ length: count }, (_, i) => forecasts[i] ?? null);
 }
 
 const CurrentWeather = styled.div`
@@ -98,5 +106,7 @@ const Temp = styled.span`
 const Forecast = styled.div`
 	display: flex;
 	flex-direction: column;
-	gap: 1vh;
+	justify-content: space-between;
+	flex: 1;
+	min-height: 0;
 `;

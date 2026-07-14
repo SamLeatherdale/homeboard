@@ -20,12 +20,15 @@ export function WeeklyForecast({
 	currentTemp,
 	hourly = false,
 }: {
-	forecasts: MergedWeatherForecast[];
+	forecasts: (MergedWeatherForecast | null)[];
 	currentTemp: number;
 	hourly?: boolean;
 }) {
-	const minTemps = forecasts.map((f) => f.templow);
-	const maxTemps = forecasts.map((f) => f.temperature);
+	const realForecasts = forecasts.filter(
+		(forecast): forecast is MergedWeatherForecast => forecast != null,
+	);
+	const minTemps = realForecasts.map((f) => f.templow);
+	const maxTemps = realForecasts.map((f) => f.temperature);
 	minTemps.push(currentTemp);
 	maxTemps.push(currentTemp);
 	const minTemp = Math.round(min(minTemps));
@@ -33,19 +36,29 @@ export function WeeklyForecast({
 
 	const calcGradientRange = gradientRange(minTemp, maxTemp, gradientMap);
 
-	return forecasts.map((forecast) => (
-		<ForecastItem
-			key={forecast.datetime.toISOString()}
-			{...{
-				forecast,
-				gradientRange: calcGradientRange,
-				minTemp,
-				maxTemp,
-				currentTemp,
-				hourly,
-			}}
-		/>
-	));
+	return forecasts.map((forecast, index) =>
+		forecast ? (
+			<ForecastItem
+				key={forecast.datetime.toISOString()}
+				{...{
+					forecast,
+					gradientRange: calcGradientRange,
+					minTemp,
+					maxTemp,
+					currentTemp,
+					hourly,
+				}}
+			/>
+		) : (
+			<Day key={`forecast-placeholder-${String(index)}`} aria-hidden>
+				<SmallTemp>&nbsp;</SmallTemp>
+				<SmallIconSpacer />
+				<SmallTemp>&nbsp;</SmallTemp>
+				<TempBarSpacer />
+				<SmallTemp>&nbsp;</SmallTemp>
+			</Day>
+		),
+	);
 }
 
 const gradientMap: Map<number, Rgb> = new Map<number, Rgb>()
@@ -125,6 +138,15 @@ const SmallIcon = styled.img`
 	width: 10vh;
 	height: 10vh;
 `;
+const SmallIconSpacer = styled.span`
+	width: 10vh;
+	height: 10vh;
+	flex-shrink: 0;
+`;
+const TempBarSpacer = styled.span`
+	width: 100%;
+	height: var(--bar-height);
+`;
 
 const SmallTemp = styled.span`
 	font-size: 10vh;
@@ -162,8 +184,8 @@ function TemperatureBar({
 			<TempBarRange
 				{...{
 					moveRight,
-					startPercent: `${startPercent}%`,
-					endPercent: `${endPercent}%`,
+					startPercent: `${String(startPercent)}%`,
+					endPercent: `${String(endPercent)}%`,
 					gradient: gradient(gradientRange, startPercent, endPercent),
 				}}
 			>
@@ -220,7 +242,7 @@ function ForecastCurrentTemp({
 	const moveRight =
 		maxTempDay === minTempDay ? 0 : (currentTemp - minTempDay) / steps;
 	return (
-		<CurrentIndicator position={`${indicatorPosition}%`}>
+		<CurrentIndicator position={`${String(indicatorPosition)}%`}>
 			<CurrentIndicatorDot moveRight={moveRight} />
 		</CurrentIndicator>
 	);
