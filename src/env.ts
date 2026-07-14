@@ -1,10 +1,12 @@
 import { EntityName, type FilterByDomain } from "@hakit/core";
 
-type EnvConfigStr = Omit<EnvConfig, "DESTINATION_STOP_IDS"> & {
+type EnvConfigStr = Omit<EnvConfig, "DESTINATION_STOP_IDS" | "HASS_TOKEN"> & {
 	DESTINATION_STOP_IDS: string;
+	HASS_TOKEN?: string;
 };
 type EnvConfig = {
 	HASS_URL: string;
+	HASS_TOKEN?: string;
 	ENTITY_WEATHER: FilterByDomain<EntityName, "weather">;
 	ENTITY_CLIMATE: FilterByDomain<EntityName, "climate">;
 	ORIGIN_STOP_ID: string;
@@ -29,7 +31,7 @@ function getConfigFromEnv() {
 	const env = Object.fromEntries(
 		Object.entries(import.meta.env as Record<string, string>)
 			.map(([key, value]) => [key.replace("VITE_", ""), value])
-			.filter(([key]) => envKeys.includes(key)),
+			.filter(([key]) => envKeys.includes(key) || key === "HASS_TOKEN"),
 	) as Record<string, string>;
 	return validateEnv(env) ? env : null;
 }

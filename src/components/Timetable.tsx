@@ -62,7 +62,7 @@ export default function Timetable() {
 		<TripsCard>
 			{responses.map((response, i) => (
 				<TripList
-					key={`${i}-${lastUpdate.toISOString()}`}
+					key={`${String(i)}-${lastUpdate.toISOString()}`}
 					response={response}
 				/>
 			))}
