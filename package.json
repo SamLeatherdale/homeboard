@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
 		"git:submodule": "git submodule update --init --recursive",
 		"install:all": "npm run install:horizon && npm run install:trainboard",
 		"install:horizon": "cd lovelace-horizon-card && npx yarn install",
