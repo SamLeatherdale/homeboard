@@ -1,4 +1,5 @@
 /// <reference types="vite/client" />
+/// <reference types="vite-plugin-pwa/client" />
 interface ImportMetaEnv {
 	VITE_HASS_URL: string;
 	VITE_HASS_TOKEN?: string;

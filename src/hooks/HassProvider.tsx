@@ -33,6 +33,7 @@ export default function HassProvider({ children }: PropsWithChildren) {
 			hassUrl={env.HASS_URL}
 			hassToken={env.HASS_TOKEN}
 			options={{
+				locale: "en",
 				renderError: (error) => <LoaderError>{error}</LoaderError>,
 				handleResumeOptions: {
 					onStatusChange: (status) => {
