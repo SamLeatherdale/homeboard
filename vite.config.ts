@@ -51,6 +51,10 @@ export default defineConfig(({ mode }) => ({
 			injectRegister: false,
 			manifest: false,
 			workbox: {
+				// injectRegister is false, so the plugin does not enable these itself.
+				// autoUpdate still needs a new worker to activate and claim the open kiosk page.
+				skipWaiting: true,
+				clientsClaim: true,
 				globPatterns: ["**/*.{js,css,html,svg}"],
 				runtimeCaching: [
 					{
