@@ -2,16 +2,21 @@ import { styled } from "@linaria/react";
 import { useEffect } from "react";
 import "./App.css";
 import DateTime from "./components/DateTime.tsx";
+import MissingConfig from "./components/MissingConfig.tsx";
 import Timetable from "./components/Timetable.tsx";
 import Weather from "./components/Weather.tsx";
-import { getEnvAsQueryParams } from "./env.ts";
+import { getEnvAsQueryParams, loadEnv } from "./env.ts";
 import HassProvider from "./hooks/HassProvider.tsx";
 
 function App() {
+	const config = loadEnv();
 	const envParams = getEnvAsQueryParams().toString();
 	useEffect(() => {
+		if (!envParams) return;
 		history.replaceState(null, "", `#${envParams}`);
 	}, [envParams]);
+
+	if (!config) return <MissingConfig />;
 
 	return (
 		<HassProvider>

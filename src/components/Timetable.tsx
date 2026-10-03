@@ -5,7 +5,7 @@ import { TransportModeId } from "../../trainboard/src/classes/LineType.ts";
 import { TPJourney } from "../../trainboard/src/models/TripPlanner/custom/TPJourney.ts";
 import { TPLeg } from "../../trainboard/src/models/TripPlanner/custom/TPLeg.ts";
 import { TPResponse } from "../../trainboard/src/models/TripPlanner/custom/TPResponse.ts";
-import { env } from "../env.ts";
+import { requireEnv } from "../env.ts";
 import { CenterCard } from "./Card.tsx";
 import { Loader } from "./Loader.tsx";
 import { TripRow } from "./timetable/TripRow.tsx";
@@ -16,6 +16,7 @@ export default function Timetable() {
 	const [lastUpdate, setLastUpdate] = useState(new Date());
 	useEffect(() => {
 		async function updateTimetable() {
+			const env = requireEnv();
 			const client = new APIClient();
 			const results = await Promise.all(
 				env.DESTINATION_STOP_IDS.map(async (destinationId) => {

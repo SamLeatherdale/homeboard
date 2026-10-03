@@ -1,7 +1,7 @@
 import { useHass } from "@hakit/core";
 import type { Connection } from "home-assistant-js-websocket";
 import { useEffect, useState } from "react";
-import { env } from "../env.ts";
+import { requireEnv } from "../env.ts";
 
 export type WeatherForecastDay = {
 	datetime: string;
@@ -21,7 +21,7 @@ export type WeatherForecastEvent = {
  * event, leaving a stale/empty forecast until the next HA push.
  */
 export function useWeatherForecast(
-	entityId: string = env.ENTITY_WEATHER,
+	entityId: string = requireEnv().ENTITY_WEATHER,
 	forecastType: WeatherForecastEvent["type"] = "daily",
 ) {
 	const connection = useHass((state) => state.connection) as
