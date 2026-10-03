@@ -28,8 +28,10 @@ function validateEnv(env: Record<string, unknown>): env is EnvConfigStr {
 }
 
 function getConfigFromEnv() {
+	const viteEnv = import.meta.env as Record<string, string> | undefined;
+	if (!viteEnv) return null;
 	const env = Object.fromEntries(
-		Object.entries(import.meta.env as Record<string, string>)
+		Object.entries(viteEnv)
 			.map(([key, value]) => [key.replace("VITE_", ""), value])
 			.filter(([key]) => envKeys.includes(key) || key === "HASS_TOKEN"),
 	) as Record<string, string>;
@@ -60,14 +62,22 @@ function saveConfigToStorage(env: Record<string, string>) {
 	localStorage.setItem(STORAGE_KEY, JSON.stringify(env));
 }
 
-function getEnv(): EnvConfig {
-	const env =
-		getConfigFromEnv() || getConfigFromUrl() || getConfigFromStorage();
-	if (!env) throw new Error("Invalid env configuration");
+function toEnvConfig(env: EnvConfigStr): EnvConfig {
 	return {
 		...env,
 		DESTINATION_STOP_IDS: env.DESTINATION_STOP_IDS.split(","),
 	};
 }
 
-export const env = getEnv();
+/** Build-time variables, the URL hash, then localStorage. Null when none are set. */
+export function loadEnv(): EnvConfig | null {
+	const env =
+		getConfigFromEnv() || getConfigFromUrl() || getConfigFromStorage();
+	return env ? toEnvConfig(env) : null;
+}
+
+export function requireEnv(): EnvConfig {
+	const env = loadEnv();
+	if (!env) throw new Error("Invalid env configuration");
+	return env;
+}
