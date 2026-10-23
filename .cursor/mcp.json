@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "chrome-devtools": {
+      "command": "${workspaceFolder}/.cursor/chrome-devtools-mcp.sh",
+      "args": []
+    }
+  }
+}
