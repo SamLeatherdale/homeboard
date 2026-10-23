@@ -15,7 +15,6 @@ import { Loader } from "./Loader.tsx";
 
 export default function Horizon() {
 	const sun = useSunEntity();
-	const attributes = sun.attributes as SunAttributes;
 	const labels = {
 		next_dusk: "Dusk",
 		next_dawn: "Dawn",
@@ -23,7 +22,12 @@ export default function Horizon() {
 		next_setting: "Sunset",
 	} satisfies Partial<Record<keyof SunAttributes, string>>;
 
-	const [{ key, time }] = Object.entries(attributes)
+	if (!sun?.attributes) {
+		return <Loader />;
+	}
+
+	const attributes = sun.attributes as SunAttributes;
+	const upcomingEvents = Object.entries(attributes)
 		.filter((entry): entry is [keyof typeof labels, string] => {
 			const [key, value] = entry;
 			return key in labels && typeof value === "string";
@@ -34,6 +38,10 @@ export default function Horizon() {
 		}))
 		.filter(({ time }) => time > new Date())
 		.sort((a, b) => a.time.getTime() - b.time.getTime());
+	if (upcomingEvents.length === 0) {
+		return <Loader />;
+	}
+	const { key, time } = upcomingEvents[0];
 
 	return (
 		<Wrapper>
