@@ -8,10 +8,13 @@ import { useWeatherForecast } from "./useWeatherForecast.ts";
 export const useConfig = () => useHass((state) => state.config);
 export const useWeatherEntity = () => {
 	const { ENTITY_WEATHER } = requireEnv();
-	const entity = useEntity(ENTITY_WEATHER);
+	const entity = useEntity(ENTITY_WEATHER, { returnNullIfNotFound: true });
 	const forecastEvent = useWeatherForecast(ENTITY_WEATHER, "daily");
-	return useMemo(
-		() => ({
+	return useMemo(() => {
+		if (!entity) {
+			return null;
+		}
+		return {
 			...entity,
 			forecast:
 				forecastEvent?.forecast && forecastEvent.forecast.length > 0
@@ -20,13 +23,14 @@ export const useWeatherEntity = () => {
 							type: forecastEvent.type,
 						}
 					: null,
-		}),
-		[entity, forecastEvent],
-	);
+		};
+	}, [entity, forecastEvent]);
 };
-export const useClimateEntity = () => useEntity(requireEnv().ENTITY_CLIMATE);
+export const useClimateEntity = () =>
+	useEntity(requireEnv().ENTITY_CLIMATE, { returnNullIfNotFound: true });
 
-export const useSunEntity = () => useEntity("sun.sun");
+export const useSunEntity = () =>
+	useEntity("sun.sun", { returnNullIfNotFound: true });
 
 export default function HassProvider({ children }: PropsWithChildren) {
 	const { HASS_URL, HASS_TOKEN } = requireEnv();

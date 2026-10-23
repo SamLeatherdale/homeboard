@@ -17,6 +17,10 @@ export default function Weather() {
 	const sun = useSunEntity();
 	const weather = useWeatherEntity();
 
+	if (!climate?.attributes || !sun || !weather?.attributes) {
+		return <Loader />;
+	}
+
 	const {
 		attributes: { current_temperature: indoorTemp },
 	} = climate;
